@@ -14,6 +14,7 @@ class TextInput extends Component
     public function __construct(
         public ?string $icon = null,
         public ?string $label = null,
+        public ?string $value = null,
         public string $id,
         public string $type = "text",
     ) {}
