@@ -5,7 +5,7 @@
         <div class="flex flex-col items-center justify-center gap-4">
             <img src="/img/front-logo.png" class="h-48" />
             <form
-                class="flex w-80 flex-col gap-4"
+                class="flex w-96 flex-col gap-4"
                 method="POST"
                 action="/signup"
             >
