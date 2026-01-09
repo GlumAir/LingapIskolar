@@ -28,6 +28,11 @@ Route::post("/login", function (Request $request) {
         ],
         501,
     );
+
+    // You can use this if it fails for authentication.
+    // return redirect("/login")
+    //     ->withErrors("NotImplemented: Check web.php for implementation")
+    //     ->withInput($request->only("username"));
 });
 
 Route::get("/signup", function () {

@@ -28,6 +28,15 @@
                     :id="'password'"
                     :icon="'bi-lock-fill'"
                 />
+                @if ($errors->any())
+                    <x-alert
+                        :type="'danger'"
+                        :title="'Something\'s not right!'"
+                    >
+                        {{ $errors->first() }}
+                    </x-alert>
+                @endif
+
                 <x-button :type="'submit'">Sign Up</x-button>
             </form>
         </div>
