@@ -6,11 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use PHPUnit\Framework\Attributes\Ticket;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -45,4 +48,51 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+//Relationships
+
+public function tickets()
+{
+    return $this->hasManyThrough(
+        Ticket::class,
+        TicketAssignment::class,
+        'agent_id',
+        'id',
+        'id',
+        'ticket_id'
+    );
+}
+
+public function ticketAssignments(){
+    return $this->hasMany(TicketAssignment::class, 'agent_id');
+}
+
+
+public function ticketMessages(){
+    return $this->hasMany(TicketMessage::class, 'sender_id');
+}
+
+public function activityLogs(){
+    return $this->hasMany(TicketActivityLog::class, 'performed_by');
+}
+
+
+//Helper Methods
+
+public function isAdmin(){
+    return $this->hasRole('admin');
+}
+
+public function isManager(){
+    return $this->hasRole('support-manager');
+}
+
+public function isAgent(){
+    return $this->hasRole('agent');
+}
+
+public function isUser(){
+    return $this->hasRole('user');
+}
+
 }
