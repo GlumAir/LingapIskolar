@@ -8,7 +8,7 @@ Route::get("/", function () {
     if (Auth()->guest()) {
         return redirect("login");
     }
-    return redirect("dashboard");
+    return redirect("ticket");
 })->name("root");
 
 Route::get("/login", function () {
@@ -39,11 +39,22 @@ Route::post("/logout", function () {
 });
 
 Route::middleware("auth")->group(function () {
-    Route::get("/dashboard", function () {
-        return "dashboard";
-    })->name("dashboard");
-
     Route::get("/ticket", function () {
+        if (auth()->user()->isAdmin()) {
+            abort(501, "TODO: Show number of tickets and diagnostic tools?");
+        }
+        if (auth()->user()->isManager()) {
+            abort(
+                501,
+                "TODO: Show ticket page where they can see all tickets and assign them to agents",
+            );
+        }
+        if (auth()->user()->isAgent()) {
+            abort(
+                501,
+                "TODO: Show ticket page where they resolve their assigned student's tickets.",
+            );
+        }
         return view("routes.user-tickets");
     })->name("ticket");
 
@@ -65,15 +76,18 @@ Route::middleware("auth")->group(function () {
     });
 
     Route::get("/ticket/assign", function () {
-        return "tickets assign page";
+        abort(
+            501,
+            "TODO: Show ticket assignment page for admins, managers, and agents only.",
+        );
     })->name("ticket-assign");
 
     Route::get("/ticket/{id}", function (string $id) {
-        return "ticket#" . $id;
+        abort(501, "TODO: Show ticket details page depending on the role.");
     })->name("ticket-details");
 
     Route::get("/ticket/{id}/review", function (string $id) {
-        return "ticket#" . $id . "-review";
+        abort(501, "TODO: Show ticket details page depending on the role.");
     })->name("ticket-detail-review");
 
     Route::get("/ticket/{id}/inquire", function (string $id) {
