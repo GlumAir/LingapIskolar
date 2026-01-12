@@ -44,7 +44,12 @@
                             </div>
                         </div>
 
-                        <form class="mt-4 flex w-full flex-row gap-2">
+                        <form
+                            method="POST"
+                            class="mt-4 flex w-full flex-row gap-2"
+                            action="/ticket/{{ $ticket["id"] }}/reply"
+                        >
+                            @csrf
                             <x-text-input
                                 :id="'message'"
                                 :label="'Message'"
@@ -55,11 +60,15 @@
                     </div>
                 </div>
                 <div
-                    class="flex h-fit w-lg gap-2 self-start rounded-2xl border-2 p-4 flex-col"
+                    class="flex h-fit w-lg flex-col gap-2 self-start rounded-2xl border-2 p-4"
                 >
                     <h2 class="text-2xl font-bold">Assigned Agent</h2>
                     <div>
-                        <img src="" alt="" class="h-[125px] w-[125px]" />
+                        <img
+                            src="/img/emu.jpg"
+                            alt=""
+                            class="h-[125px] w-[125px]"
+                        />
                         <p class="text-xl font-bold">Sample Name</p>
                         <p>Sample Title</p>
                     </div>

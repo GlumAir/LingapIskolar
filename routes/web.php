@@ -108,6 +108,23 @@ Route::middleware("auth")->group(function () use ($tickets) {
         ]);
     })->name("ticket-details");
 
+    Route::post("/ticket/{id}/reply", function (Request $request, string $id) {
+        $data = $request->all();
+        $data["ticket_id"] = $id;
+        $data["user_id"] = auth()->user()->id;
+
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" =>
+                    "TODO: Create the ticket and redirect to the ticket itself",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $data,
+            ],
+            501,
+        );
+    });
+
     Route::post("/ticket/create", function (Request $request) {
         return response()->json(
             [
