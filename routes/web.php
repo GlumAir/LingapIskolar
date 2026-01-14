@@ -40,7 +40,7 @@ $tickets = [
         "priority" => "Medium",
         "requested_by" => "Sample User",
         "assigned_to" => "Cirno",
-        "assignee_title" => "Stupid Fairy"
+        "assignee_title" => "Stupid Fairy",
     ],
 ];
 
@@ -120,18 +120,23 @@ Route::middleware("auth")->group(function () use ($tickets) {
     });
 
     Route::get("/ticket/{id}", function (string $id) use ($tickets) {
-        if (auth()->user()->isAdmin()) {
-            abort(404); // return to admin dashboard instead
-        }
-        if (auth()->user()->isManager() || auth()->user()->isAgent()) {
-            abort(501, "TODO: Show ticket details page in superior mode.");
-        }
-
-        // TODO: Check if user owned the ticket.
+        // TODO: Check if user owned the ticket or ticket exists. Do this in controller.
         $indexed_records = array_column($tickets, null, "id");
 
         if (!array_key_exists($id, $indexed_records)) {
             abort(404, "Ticket not found in local sample data.");
+        }
+
+        if (auth()->user()->isAdmin()) {
+            abort(404); // return to admin dashboard instead
+        }
+        if (auth()->user()->isManager()) {
+            abort(501, "TODO: Show ticket details page in manager mode.");
+        }
+        if (auth()->user()->isAgent()) {
+            return view("routes.agent-ticket-details", [
+                "ticket" => $indexed_records[$id],
+            ]);
         }
 
         return view("routes.user-ticket-details", [
@@ -141,6 +146,26 @@ Route::middleware("auth")->group(function () use ($tickets) {
 
     Route::post("/ticket/{id}/reply", function (Request $request, string $id) {
         $data = $request->all();
+
+        $data["ticket_id"] = $id;
+        $data["user_id"] = auth()->user()->id;
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" =>
+                    "TODO: Create the reply, refresh, and show the reply thread",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $data,
+            ],
+            501,
+        );
+    });
+
+    Route::put("/ticket/{id}/status", function (Request $request, string $id) {
+        if (auth()->user()->isUser()) {
+            abort(401);
+        }
+        $data = $request->all();
         $data["ticket_id"] = $id;
         $data["user_id"] = auth()->user()->id;
 
@@ -148,7 +173,7 @@ Route::middleware("auth")->group(function () use ($tickets) {
             [
                 "status" => 501,
                 "comment" =>
-                    "TODO: Create the reply, refresh, and show the reply thread",
+                    "TODO: Put everything here on controller, including the authorization.",
                 "message" => "Not Implemented: Data still received.",
                 "data" => $data,
             ],

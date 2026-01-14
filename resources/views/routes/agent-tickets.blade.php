@@ -1,6 +1,6 @@
 @extends("layouts.main")
 
-@section("side")
+@section("headerside")
     <form
         method="GET"
         class="w-full max-w-[40%]"
@@ -16,31 +16,33 @@
 
 @section("main")
     <div class="flex w-full flex-col gap-6 bg-zinc-50/50 p-6 px-10">
-        <div
-            class="flex items-end justify-between border-b border-zinc-200 pb-6"
-        >
-            <div>
-                <h1
-                    class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+        <x-page-header>
+            <x-slot:header>
+                <div>
+                    <h1
+                        class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+                    >
+                        Agent Dashboard
+                    </h1>
+                    <p class="text-lg text-zinc-500">
+                        Active tickets for
+                        <span class="font-semibold text-red-800">
+                            {{ auth()->user()->name }}
+                        </span>
+                    </p>
+                </div>
+            </x-slot>
+            <x-slot:side>
+                <x-button
+                    :variant="'secondary'"
+                    class="shadow-sm hover:shadow"
+                    onclick="location.reload()"
                 >
-                    Agent Dashboard
-                </h1>
-                <p class="text-lg text-zinc-500">
-                    Active tickets for
-                    <span class="font-semibold text-red-800">
-                        {{ auth()->user()->name }}
-                    </span>
-                </p>
-            </div>
-            <x-button
-                :variant="'secondary'"
-                class="shadow-sm hover:shadow"
-                onclick="location.reload()"
-            >
-                <i class="bi bi-arrow-clockwise mr-2"></i>
-                Refresh
-            </x-button>
-        </div>
+                    <i class="bi bi-arrow-clockwise mr-2"></i>
+                    Refresh
+                </x-button>
+            </x-slot>
+        </x-page-header>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter :name="'Overdue'" :value="1" :color="'red-600'" />
@@ -63,7 +65,9 @@
                     value="{{ request("search") }}"
                 />
 
-                <div class="flex flex-1 items-center gap-4">
+                <div
+                    class="flex flex-1 flex-col items-center gap-4 md:flex-row"
+                >
                     <x-select-input :id="'status'" :label="'Filter Status'">
                         <option value="">All Statuses</option>
                         <option value="open">Open</option>
@@ -81,123 +85,26 @@
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </x-select-input>
-                </div>
-
-                <div class="flex gap-2">
-                    <x-button type="submit" class="min-w-32">
-                        Apply Filters
-                    </x-button>
-                    @if (request()->anyFilled(["status", "priority"]))
-                        <a
-                            href="{{ route("dashboard") }}"
-                            class="flex items-center px-4 text-sm font-medium text-zinc-500 transition hover:text-red-800"
-                        >
-                            Clear
-                        </a>
-                    @endif
+                    <div class="flex flex-col items-center gap-2 md:flex-row">
+                        <x-button type="submit" class="min-w-32">
+                            Apply Filters
+                        </x-button>
+                        @if (request()->anyFilled(["status", "priority"]))
+                            <a
+                                href="{{ route("dashboard") }}"
+                                class="flex items-center px-4 text-sm font-medium text-zinc-500 transition hover:text-red-800"
+                            >
+                                Clear
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </form>
         </div>
 
-        <div
-            class="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm"
-        >
-            <table class="w-full border-collapse text-left">
-                <thead>
-                    <tr
-                        class="bg-zinc-50 text-xs font-bold tracking-wider text-zinc-600 uppercase"
-                    >
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Ticket ID
-                        </th>
-                        
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Requester
-                        </th>
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Subject & Description
-                        </th>
-                        
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Status
-                        </th>
-                        <th class="border-b border-zinc-200 px-6 py-4">
-                            Priority
-                        </th>
-                        <th
-                            class="border-b border-zinc-200 px-6 py-4 text-right"
-                        >
-                            Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-zinc-100">
-                    @forelse ($tickets as $ticket)
-                        <tr class="group transition-all hover:bg-zinc-50/80">
-                            <td class="px-6 py-5 align-top">
-                                <span
-                                    class="rounded bg-red-50 px-2 py-1 font-mono text-sm font-bold text-red-700"
-                                >
-                                    #{{ $ticket["id"] }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-5 align-top">
-                                
-                                    {{ $ticket["requested_by"] }}
-                                
-                            </td>
-                            
-                            <td class="px-6 py-5">
-                                <div
-                                    class="font-bold text-zinc-900 transition-colors group-hover:text-red-800"
-                                >
-                                    {{ $ticket["subject"] }}
-                                </div>
-                                <div
-                                    class="mt-1 max-w-sm truncate text-sm text-zinc-500"
-                                >
-                                    {{ $ticket["description"] }}
-                                </div>
-                            </td>
-                            
-                            <td class="px-6 py-5 align-top">
-                                <x-ticket-status :status="$ticket['status']" />
-                            </td>
-                            <td class="px-6 py-5 align-top">
-                                <x-ticket-priority :priority="$ticket['priority']" />
-                            </td>
-                            <td class="px-6 py-5 text-right align-top">
-                                <a
-                                    href="/ticket/{{ $ticket["id"] }}"
-                                    class="inline-flex items-center text-sm font-bold text-red-800 transition hover:text-red-600"
-                                >
-                                    Manage
-                                    <i class="bi bi-chevron-right ml-1"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center">
-                                    <i
-                                        class="bi bi-inbox text-5xl text-zinc-300"
-                                    ></i>
-                                    <p
-                                        class="mt-4 text-lg font-medium text-zinc-500"
-                                    >
-                                        No tickets found
-                                    </p>
-                                    <p class="text-sm text-zinc-400">
-                                        Try adjusting your filters or search
-                                        query.
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+        <x-ticket-table
+            :columns="['id', 'requested_by', 'subject', 'status', 'priority']"
+            :tickets="$tickets"
+        />
     </div>
 @endsection

@@ -13,6 +13,23 @@
                 <x-ticket-status :status="$ticket['status']" />
             </x-slot>
             <x-slot:side>
+                <form
+                    method="POST"
+                    action="/ticket/{{ $ticket["id"] }}/status"
+                    class="flex justify-center"
+                >
+                    @csrf
+                    @method("PUT")
+                    <input type="hidden" name="status" value="Escalated" />
+                    <x-button
+                        :variant="'primary'"
+                        class="shadow-sm"
+                        :type="'submit'"
+                        :extend="false"
+                    >
+                        Escalate Ticket
+                    </x-button>
+                </form>
                 <x-button
                     :variant="'secondary'"
                     :href="route('dashboard')"
@@ -25,7 +42,10 @@
         </x-page-header>
         <div class="flex flex-col items-start gap-8 md:flex-row">
             <div class="flex flex-1 flex-col gap-6">
-                <x-ticket-details :ticket="$ticket" />
+                <x-ticket-details
+                    :ticket="$ticket"
+                    :columns="['subject', 'description', 'category', 'priority']"
+                />
 
                 <div
                     class="flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm"
@@ -82,6 +102,7 @@
 
             <div class="flex w-80 flex-col gap-6">
                 <x-ticket-details-user :ticket="$ticket" />
+                <x-ticket-details-lifecycle :ticket="$ticket" />
             </div>
         </div>
     </div>

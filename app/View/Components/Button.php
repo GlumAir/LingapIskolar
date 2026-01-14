@@ -16,6 +16,8 @@ class Button extends Component
         public string $type = "button",
         public string $variant = "primary",
         public string $size = "md",
+        public ?bool $extend = false,
+        public ?string $height = "",
     ) {
         // Added size prop
     }
@@ -38,12 +40,16 @@ class Button extends Component
                 => "bg-white hover:bg-zinc-50 text-red-800 border-red-800 border-2",
             "danger"
                 => "bg-rose-600 hover:bg-rose-500 text-white border-transparent",
+            "green"
+                => "bg-green-600 hover:bg-green-500 text-white border-transparent",
             "ghost"
                 => "bg-transparent hover:bg-zinc-100 text-zinc-600 border-transparent",
             default => "bg-red-800 text-white border-transparent",
         };
 
-        return "{$base} {$sizes} {$colors}";
+        return $this->extend
+            ? "{$base} {$sizes} {$colors} {$this->height} w-full"
+            : "{$base} {$sizes} {$colors} {$this->height}";
     }
 
     /**
@@ -53,6 +59,4 @@ class Button extends Component
     {
         return view("components.button");
     }
-
-    
 }
