@@ -16,31 +16,33 @@
 
 @section("main")
     <div class="flex w-full flex-col gap-6 bg-zinc-50/50 p-6 px-10">
-        <div
-            class="flex justify-between border-b border-zinc-200 pb-6 md:flex-row flex-col gap-4"
-        >
-            <div>
-                <h1
-                    class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+        <x-page-header>
+            <x-slot:header>
+                <div>
+                    <h1
+                        class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+                    >
+                        Agent Dashboard
+                    </h1>
+                    <p class="text-lg text-zinc-500">
+                        Active tickets for
+                        <span class="font-semibold text-red-800">
+                            {{ auth()->user()->name }}
+                        </span>
+                    </p>
+                </div>
+            </x-slot>
+            <x-slot:side>
+                <x-button
+                    :variant="'secondary'"
+                    class="shadow-sm hover:shadow"
+                    onclick="location.reload()"
                 >
-                    Agent Dashboard
-                </h1>
-                <p class="text-lg text-zinc-500">
-                    Active tickets for
-                    <span class="font-semibold text-red-800">
-                        {{ auth()->user()->name }}
-                    </span>
-                </p>
-            </div>
-            <x-button
-                :variant="'secondary'"
-                class="shadow-sm hover:shadow"
-                onclick="location.reload()"
-            >
-                <i class="bi bi-arrow-clockwise mr-2"></i>
-                Refresh
-            </x-button>
-        </div>
+                    <i class="bi bi-arrow-clockwise mr-2"></i>
+                    Refresh
+                </x-button>
+            </x-slot>
+        </x-page-header>
 
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter :name="'Overdue'" :value="1" :color="'red-600'" />
@@ -83,7 +85,7 @@
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
                     </x-select-input>
-                    <div class="flex gap-2 md:flex-row flex-col items-center">
+                    <div class="flex flex-col items-center gap-2 md:flex-row">
                         <x-button type="submit" class="min-w-32">
                             Apply Filters
                         </x-button>

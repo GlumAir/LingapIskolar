@@ -17,6 +17,11 @@
                         Requester
                     </th>
                 @endif
+                @if (in_array("assigned_to", $columns))
+                    <th class="border-b border-zinc-200 px-6 py-4">
+                        Assigned Agent
+                    </th>
+                @endif
 
                 @if (in_array("subject", $columns))
                     <th class="border-b border-zinc-200 px-6 py-4">
@@ -53,6 +58,11 @@
                     @if (in_array("requested_by", $columns))
                         <td class="px-6 py-5 align-top">
                             {{ $ticket["requested_by"] }}
+                        </td>
+                    @endif
+                    @if (in_array("assigned_to", $columns))
+                        <td class="px-6 py-5 align-top">
+                            {{ $ticket["assigned_to"] }}
                         </td>
                     @endif
 

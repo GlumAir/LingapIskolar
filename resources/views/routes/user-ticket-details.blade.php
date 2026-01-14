@@ -2,10 +2,8 @@
 
 @section("main")
     <div class="flex w-full flex-col gap-6 bg-zinc-50/50 p-6 px-10">
-        <div
-            class="flex items-end justify-between border-b border-zinc-200 pb-6 md:flex-row flex-col gap-4"
-        >
-            <div class="flex items-center gap-4">
+        <x-page-header>
+            <x-slot:header>
                 <h1
                     class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
                 >
@@ -13,18 +11,20 @@
                     <span class="text-red-800">#{{ $ticket["id"] }}</span>
                 </h1>
                 <x-ticket-status :status="$ticket['status']" />
-            </div>
-            <x-button
-                :variant="'secondary'"
-                :href="route('dashboard')"
-                class="shadow-sm"
-            >
-                <i class="bi bi-arrow-left mr-2"></i>
-                Back to Dashboard
-            </x-button>
-        </div>
+            </x-slot:header>
+            <x-slot:side>
+                <x-button
+                    :variant="'secondary'"
+                    :href="route('dashboard')"
+                    class="shadow-sm"
+                >
+                    <i class="bi bi-arrow-left mr-2"></i>
+                    Back to Dashboard
+                </x-button>
+            </x-slot:side>
+        </x-page-header>
 
-        <div class="flex md:flex-row flex-col items-start gap-8">
+        <div class="flex flex-col items-start gap-8 md:flex-row">
             <div class="flex flex-1 flex-col gap-6">
                 <div
                     class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"

@@ -16,20 +16,20 @@
 
 @section("main")
     <div class="flex w-full flex-col gap-6 bg-zinc-50/50 p-6 px-10">
-        <div
-            class="flex flex-col justify-between gap-4 border-b border-zinc-200 pb-6 md:flex-row"
-        >
-            <div>
-                <h1
-                    class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
-                >
-                    My Tickets
-                </h1>
-                <p class="text-lg text-zinc-500">
-                    Track and manage your support requests
-                </p>
-            </div>
-            <div class="flex flex-col gap-4 md:flex-row">
+        <x-page-header>
+            <x-slot:header>
+                <div>
+                    <h1
+                        class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
+                    >
+                        My Tickets
+                    </h1>
+                    <p class="text-lg text-zinc-500">
+                        Track and manage your support requests
+                    </p>
+                </div>
+            </x-slot>
+            <x-slot:side>
                 <x-button
                     :variant="'secondary'"
                     onclick="location.reload()"
@@ -39,8 +39,9 @@
                     Refresh
                 </x-button>
                 <x-button :href="route('ticket-create')">New Ticket</x-button>
-            </div>
-        </div>
+            </x-slot>
+        </x-page-header>
+
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter
                 :name="'In Progress'"
@@ -103,7 +104,7 @@
             </form>
         </div>
         <x-ticket-table
-            :columns="['id', '', 'subject', 'status']"
+            :columns="['id', 'subject', 'status']"
             :tickets="$tickets"
         />
     </div>
