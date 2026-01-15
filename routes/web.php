@@ -213,7 +213,7 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
 
     Route::put("/ticket/{id}/status", function (Request $request, string $id) {
         if (auth()->user()->isUser()) {
-            abort(401);
+            abort(404);
         }
         $data = $request->all();
         $data["ticket_id"] = $id;
@@ -233,7 +233,7 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
 
     Route::put("/ticket/{id}/assign", function (Request $request, string $id) {
         if (!auth()->user()->isManager()) {
-            abort(401);
+            abort(404);
         }
 
         $data = $request->all();
@@ -251,4 +251,29 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
             501,
         );
     });
+
+    Route::get("/manager", function (Request $request) use ($agents) {
+        if (!auth()->user()->isAdmin()) {
+            abort(404);
+        }
+        return view("routes.admin-assignee-list", ["agents" => $agents]);
+    })->name("assignee-list");
+
+    Route::post("/manager/add", function (Request $request) {
+        if (!auth()->user()->isAdmin()) {
+            abort(401);
+        }
+        $data = $request->all();
+
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" =>
+                    "TODO: Create a new manager user with the temporary password you set.",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $data,
+            ],
+            501,
+        );
+    })->name("manager-list");
 });
