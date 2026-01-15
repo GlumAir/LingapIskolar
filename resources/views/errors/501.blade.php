@@ -1,7 +1,7 @@
 @extends("layouts.main")
 
 @section("main")
-    <div class="flex w-full flex-col items-center justify-center gap-4">
+    <div class="flex h-full w-full flex-col items-center justify-center gap-4">
         <div class="flex flex-col gap-2 text-center">
             <p class="text-8xl font-bold">501</p>
             <h1 class="text-2xl font-bold">
