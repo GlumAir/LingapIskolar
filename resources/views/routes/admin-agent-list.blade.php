@@ -8,10 +8,10 @@
                     <h1
                         class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
                     >
-                        Manager
+                        Agent List
                     </h1>
                     <p class="text-lg text-zinc-500">
-                        Add users to manage and assign tickets to agents.
+                        Add users to handle assigned tickets.
                     </p>
                 </div>
             </x-slot>
@@ -24,7 +24,7 @@
                     <i class="bi bi-arrow-clockwise mr-2"></i>
                     Refresh
                 </x-button>
-                <x-add-manager-modal />
+                <x-add-agent-modal />
             </x-slot>
         </x-page-header>
 
@@ -33,7 +33,7 @@
         >
             <form
                 method="GET"
-                action="{{ route("manager-list") }}"
+                action="{{ route("agent-list") }}"
                 class="flex w-full items-center gap-6"
             >
                 <div
@@ -54,7 +54,7 @@
                         </x-button>
                         @if (request()->anyFilled(["search", "status", "priority"]))
                             <a
-                                href="{{ route("manager-list") }}"
+                                href="{{ route("agent-list") }}"
                                 class="flex items-center px-4 text-sm font-medium text-zinc-500 transition hover:text-red-800"
                             >
                                 Clear
@@ -70,7 +70,7 @@
             <h2
                 class="text-s mb-4 font-black tracking-widest text-zinc-500 uppercase"
             >
-                Managers
+                Agents
             </h2>
             <div
                 class="flex flex-row flex-wrap items-center justify-evenly gap-2"
@@ -97,7 +97,6 @@
                             >
                                 {{ $agent["email"] }}
                             </p>
-                            
                         </div>
                     </div>
                 @endforeach

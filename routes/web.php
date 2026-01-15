@@ -256,10 +256,10 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         if (!auth()->user()->isAdmin()) {
             abort(404);
         }
-        return view("routes.admin-assignee-list", ["agents" => $agents]);
-    })->name("assignee-list");
+        return view("routes.admin-manager-list", ["agents" => $agents]);
+    })->name("manager-list");
 
-    Route::post("/manager/add", function (Request $request) {
+    Route::put("/manager/add", function (Request $request) {
         if (!auth()->user()->isAdmin()) {
             abort(401);
         }
@@ -268,12 +268,35 @@ Route::middleware("auth")->group(function () use ($agents, $tickets) {
         return response()->json(
             [
                 "status" => 501,
-                "comment" =>
-                    "TODO: Create a new manager user with the temporary password you set.",
+                "comment" => "TODO: Convert the user to manager role.",
                 "message" => "Not Implemented: Data still received.",
                 "data" => $data,
             ],
             501,
         );
     })->name("manager-list");
+
+    Route::get("/agent", function (Request $request) use ($agents) {
+        if (!auth()->user()->isAdmin()) {
+            abort(404);
+        }
+        return view("routes.admin-agent-list", ["agents" => $agents]);
+    })->name("agent-list");
+
+    Route::put("/agent/add", function (Request $request) {
+        if (!auth()->user()->isAdmin()) {
+            abort(401);
+        }
+        $data = $request->all();
+
+        return response()->json(
+            [
+                "status" => 501,
+                "comment" => "TODO: Convert the user to agent role.",
+                "message" => "Not Implemented: Data still received.",
+                "data" => $data,
+            ],
+            501,
+        );
+    });
 });

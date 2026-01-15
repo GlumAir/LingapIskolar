@@ -10,9 +10,10 @@
             x-transition.opacity
             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm"
         >
-            <form method="POST" action="/manager/add">
+            <form method="POST" action="/agent/add">
                 @csrf
                 @method("PUT")
+
                 <div
                     class="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
                 >
@@ -23,11 +24,11 @@
                                     <h1
                                         class="text-3xl font-black tracking-tight text-zinc-900 uppercase"
                                     >
-                                        Add New Manager
+                                        Add New Agent
                                     </h1>
                                     <p class="text-lg text-zinc-500">
                                         Please provide the email of the user to
-                                        change their role as Manager.
+                                        change their role as Agent.
                                     </p>
                                 </div>
                             </x-slot>
