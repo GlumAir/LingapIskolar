@@ -4,7 +4,7 @@
     <div class="mb-1 flex items-center gap-2 px-1">
         @if (! $me)
             <span class="text-xs font-semibold text-gray-600">
-                {{ $name }}
+                {{ $name ?? 'System' }}
             </span>
         @endif
 

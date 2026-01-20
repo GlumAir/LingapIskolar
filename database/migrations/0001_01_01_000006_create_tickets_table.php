@@ -24,8 +24,10 @@ return new class extends Migration {
                 ->onDelete("restrict");
             $table
                 ->foreignId("priority_id")
+                ->nullable()  //added nullable for users creating tickets without priority
                 ->constrained("ticket_priorities")
-                ->onDelete("restrict");
+                //->onDelete("restrict");
+                ->nullOnDelete();
             $table->string("subject");
             $table->text("description");
             $table->timestamps();

@@ -12,7 +12,7 @@ class MessageBubble extends Component
      * Create a new component instance.
      */
     public function __construct(
-        public string $name,
+        public ?string $name,
         public string $date,
         public string $content,
         public string $imgLink,

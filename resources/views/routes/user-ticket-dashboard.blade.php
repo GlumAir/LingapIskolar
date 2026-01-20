@@ -46,17 +46,17 @@
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter
                 :name="'Open'"
-                :value="1"
+                :value="$stats['open']"
                 :color="'border-l-green-600'"
             />
             <x-counter
                 :name="'In Progress'"
-                :value="1"
+                :value="$stats['in_progress']"
                 :color="'border-l-amber-500'"
             />
             <x-counter
                 :name="'Closed'"
-                :value="1"
+                :value="$stats['closed']"
                 :color="'border-l-zinc-400'"
             />
         </div>

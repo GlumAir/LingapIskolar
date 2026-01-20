@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -163,7 +166,7 @@ Route::middleware("auth")->group(function () use (
     $tickets,
     $chat,
 ) {
-    Route::get("/dashboard", function () use ($tickets, $sample_members) {
+    /*Route::get("/dashboard", function () use ($tickets, $sample_members) {
         if (auth()->user()->isAdmin()) {
             return view("routes.admin-dashboard", [
                 "tickets" => $tickets,
@@ -185,7 +188,10 @@ Route::middleware("auth")->group(function () use (
 
         // TODO: Check owned tickets
         return view("routes.user-ticket-dashboard", ["tickets" => $tickets]);
-    })->name("dashboard");
+    })->name("dashboard"); */
+
+  /*  Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
+
 
     Route::get("/ticket/create", function () {
         return view("routes.create-ticket");
@@ -385,5 +391,27 @@ Route::middleware("auth")->group(function () use (
             ],
             501,
         );
-    });
+    });*/
+
+
+     // Dashboard
+    Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
+
+    // Ticket routes
+    Route::get("/ticket/create", [TicketController::class, "create"])->name("ticket-create");
+    Route::post("/ticket/create", [TicketController::class, "store"]);
+    Route::get("/ticket/{id}", [TicketController::class, "show"])->name("ticket-details");
+    Route::post("/ticket/{id}/reply", [TicketController::class, "reply"]);
+    Route::put("/ticket/{id}/status", [TicketController::class, "updateStatus"]);
+    Route::put("/ticket/{id}/assign", [TicketController::class, "assign"]);
+
+    // Admin routes - Manager management
+    Route::get("/manager", [AdminController::class, "listManagers"])->name("manager-list");
+    Route::put("/manager/add", [AdminController::class, "addManager"]);
+    Route::put("/manager/revoke", [AdminController::class, "revokeManager"]);
+
+    // Admin routes - Agent management
+    Route::get("/agent", [AdminController::class, "listAgents"])->name("agent-list");
+    Route::put("/agent/add", [AdminController::class, "addAgent"]);
+    Route::put("/agent/revoke", [AdminController::class, "revokeAgent"]);
 });

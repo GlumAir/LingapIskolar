@@ -5,13 +5,15 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Illuminate\Support\Collection; 
 
 class Chat extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct(public array $chat, public string $id)
+   // public function __construct(public array $chat, public string $id) 
+    public function __construct(public Collection $chat, public string $id)
     {
         //
     }

@@ -48,22 +48,22 @@
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter
                 :name="'Open'"
-                :value="1"
+                :value="$stats['open']"
                 :color="'border-l-green-600'"
             />
             <x-counter
                 :name="'Pending'"
-                :value="1"
+                :value="$stats['pending']"
                 :color="'border-l-blue-600'"
             />
             <x-counter
                 :name="'Escalated'"
-                :value="1"
+                :value="$stats['escalated']"
                 :color="'border-l-red-600'"
             />
             <x-counter
                 :name="'Resolved'"
-                :value="1"
+                :value="$stats['resolved']"
                 :color="'border-l-zinc-400'"
             />
         </div>
