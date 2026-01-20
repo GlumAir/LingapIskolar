@@ -58,7 +58,12 @@
                         <x-button :type="'submit'">Assign</x-button>
                     </form>
                 </div>
-                <x-ticket-details-lifecycle :ticket="$ticket" />
+                <x-ticket-details-lifecycle 
+                    :ticket="$ticket"
+                    :raw_ticket="$raw_ticket"
+                    :statuses="$statuses"
+                    :priorities="$priorities"
+                />
             </div>
         </div>
     </div>

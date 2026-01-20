@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -38,6 +38,9 @@ class UserController extends Controller
             "email" => $request->email,
             "password" => Hash::make($request->password),
         ]);
+
+        // ADD THIS: Assign default "user" role
+        $newUser->assignRole('user');
 
         Auth::login($newUser);
 

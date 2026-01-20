@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use PHPUnit\Framework\Attributes\Ticket;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -41,9 +40,16 @@ class User extends Authenticatable
         ];
     }
 
-    //Relationships
+    // Relationships
 
+    // Tickets created by this user (as ticket creator)
     public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    // Tickets assigned to this user (as agent)
+    public function assignedTickets()
     {
         return $this->hasManyThrough(
             Ticket::class,
@@ -70,7 +76,7 @@ class User extends Authenticatable
         return $this->hasMany(TicketActivityLog::class, "performed_by");
     }
 
-    //Helper Methods
+    // Helper Methods
 
     public function isAdmin()
     {

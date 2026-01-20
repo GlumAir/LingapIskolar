@@ -35,16 +35,23 @@
                     placeholder="Briefly describe your issue"
                 />
 
-                <x-select-input
-                    :id="'category'"
-                    :label="'Category'"
-                    :value="request('category')"
-                >
-                    <x-option-input
-                        :options="['Scholarship Inquiry', 'Financial Assistance', 'Documents Submission', 'Application Status', 'Technical Support', 'General Inquiry']"
-                        select-name="category"
-                    />
-                </x-select-input>
+                {{-- FIXED: Use category_id and pass $categories from controller --}}
+                <div>
+                    <label for="category_id" class="block text-sm font-medium text-zinc-700 mb-2">
+                        Category
+                    </label>
+                    <select 
+                        name="category_id" 
+                        id="category_id" 
+                        required
+                        class="w-full rounded-lg border border-zinc-300 px-4 py-3 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-200"
+                    >
+                        <option value="">Select a category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <x-text-box-input
                     :label="'Detailed Description'"

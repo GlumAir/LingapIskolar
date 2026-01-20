@@ -8,13 +8,13 @@
     </div>
 
     <div class="h-[500px] space-y-4 overflow-y-auto bg-zinc-50/30 p-6">
-        @foreach ($chat as $message)
+      @foreach($chat as $message)
             <x-message-bubble
-                :name="$message['name']"
-                :date="$message['date']"
-                :content="$message['message']"
-                :me="$message['me']"
-                :img-link="$message['img_link']"
+                :name="$message->sender->name"
+                :date="$message->created_at->format('M d, Y H:i')"
+                :content="$message->message"
+                :img-link="$message->sender?->profile_photo_url ?? '/img/emu.jpg'"
+                :me="$message->sender_id === auth()->id()"
             />
         @endforeach
     </div>

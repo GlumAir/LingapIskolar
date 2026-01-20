@@ -45,22 +45,22 @@
         <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
             <x-counter
                 :name="'Open'"
-                :value="1"
+                :value="$stats['open']"
                 :color="'border-l-green-600'"
             />
             <x-counter
                 :name="'Unassigned'"
-                :value="1"
+                :value="$stats['unassigned']"
                 :color="'border-l-amber-500'"
             />
             <x-counter
                 :name="'Escalated'"
-                :value="1"
+                :value="$stats['escalated']"
                 :color="'border-l-red-600'"
             />
             <x-counter
                 :name="'Resolved'"
-                :value="1"
+                :value="$stats['resolved']"
                 :color="'border-l-zinc-400'"
             />
         </div>

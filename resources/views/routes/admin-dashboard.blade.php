@@ -37,19 +37,19 @@
                 <div class="flex flex-col gap-4">
                     <x-counter
                         :name="'Total'"
-                        :value="420"
+                        :value="$stats['total']"
                         :color="'border-l-orange-200'"
                         :icon="'bi-ticket-detailed'"
                     />
                     <x-counter
                         :name="'Open'"
-                        :value="69"
+                        :value="$stats['open']"
                         :icon="'bi-door-open'"
                         :color="'border-l-green-600'"
                     />
                     <x-counter
                         :name="'Closed'"
-                        :value="351"
+                        :value="$stats['closed']"
                         :color="'border-l-gray-200'"
                         :icon="'bi-door-closed'"
                     />
@@ -64,19 +64,19 @@
                 <div class="flex flex-col gap-4">
                     <x-counter
                         :name="'Assigners Total'"
-                        :value="4"
+                        :value="$stats['agents_total']"
                         :color="'border-l-orange-200'"
                         :icon="'bi-person-add'"
                     />
                     <x-counter
                         :name="'Manager Total'"
-                        :value="2"
+                        :value="$stats['managers_total']"
                         :color="'border-l-cyan-200'"
                         :icon="'bi-person-up'"
                     />
                     <x-counter
                         :name="'Inactive'"
-                        :value="5"
+                        :value="$stats['inactive']"
                         :color="'border-l-gray-200'"
                         :icon="'bi-person-x'"
                     />

@@ -46,7 +46,7 @@ class TicketMessage extends Model
         }
 
         //Regular users can only see public messages
-        return $query->where("is_internal, false");
+        return $query->where('is_internal', false);
     }
 
     protected static function boot()

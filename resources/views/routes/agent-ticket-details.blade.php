@@ -21,7 +21,12 @@
                 >
                     @csrf
                     @method("PUT")
-                    <input type="hidden" name="status" value="Escalated" />
+                    <input 
+                        type="hidden" 
+                        name="status_id" 
+                        value="{{ $statuses->where('name','Escalated')->first()->id }}" 
+                    />
+
                     <x-button
                         :variant="'primary'"
                         class="shadow-sm"
@@ -53,7 +58,12 @@
 
             <div class="flex w-full flex-col gap-6 md:w-80">
                 <x-ticket-details-user :ticket="$ticket" :user="'user'" />
-                <x-ticket-details-lifecycle :ticket="$ticket" />
+                <x-ticket-details-lifecycle 
+                :ticket="$ticket"
+                :raw_ticket="$raw_ticket"
+                :statuses="$statuses"
+                :priorities="$priorities"
+                />
             </div>
         </div>
     </div>

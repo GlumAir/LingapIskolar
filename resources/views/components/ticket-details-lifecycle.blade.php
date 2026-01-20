@@ -21,7 +21,14 @@
                 >
                     @csrf
                     @method("PUT")
-                    <input type="hidden" name="status" value="Resolved" />
+
+                    {{-- Change on data to send, instead of name, send ID --}}
+                    <input 
+                    type="hidden" 
+                    name="status_id" 
+                    value="{{ $statuses->where('name', 'Resolved')->first()->id }}" 
+                    />
+
                     <x-button
                         :height="'h-16'"
                         :variant="'green'"
@@ -45,18 +52,18 @@
                     @csrf
                     @method("PUT")
                     <x-select-input
-                        :id="'status'"
-                        :value="$ticket['status']"
+                        id="status_id"
+                        name="status_id"
                         onchange="this.form.submit()"
                     >
-                        <option value="Open">Open</option>
-                        <option value="Assigned">Assigned</option>
-                        <option value="Pending User Response">
-                            Pending User Response
-                        </option>
-                        <option value="Closed">Closed</option>
-                        <option value="Escalated">Escalated</option>
-                        <option value="Resolved">Resolved</option>
+                        @foreach($statuses as $status)
+                            <option 
+                                value="{{ $status->id }}"
+                                @selected($raw_ticket->status_id == $status->id)
+                            >
+                                {{ $status->name }}
+                            </option>
+                        @endforeach
                     </x-select-input>
                 </form>
             </div>
@@ -65,15 +72,19 @@
                 @method("PUT")
 
                 <x-select-input
-                    :id="'priority'"
-                    :value="$ticket['priority']"
-                    :label="'Priority'"
+                    id="priority_id"
+                    name="priority_id"
+                    label="'Priority'"
                     onchange="this.form.submit()"
                 >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                    <option value="Urgent">Urgent</option>
+                   @foreach($priorities as $priority)
+                        <option 
+                            value="{{ $priority->id }}"
+                            @selected($raw_ticket->priority_id == $priority->id)
+                        >
+                            {{ $priority->name }}
+                        </option>
+                    @endforeach
                 </x-select-input>
             </form>
         </div>
