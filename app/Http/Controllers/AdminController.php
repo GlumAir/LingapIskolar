@@ -15,25 +15,25 @@ class AdminController extends Controller
     public function listManagers()
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
-        $managers = User::role('support-manager')
+        $managers = User::role("support-manager")
             ->get()
             ->map(function ($manager) {
                 return [
-                    'id' => (string)$manager->id,
-                    'name' => $manager->name,
-                    'email' => $manager->email,
-                    'title' => 'Support Manager',
-                    'img_link' => '/img/emu.jpg',
+                    "id" => (string) $manager->id,
+                    "name" => $manager->name,
+                    "email" => $manager->email,
+                    "title" => "Support Manager",
+                    "img_link" => "/img/emu.jpg",
                 ];
             })
             ->toArray();
 
-        return view('routes.admin-manager-list', [
-            'managers' => $managers,
+        return view("routes.admin-manager-list", [
+            "managers" => $managers,
         ]);
     }
 
@@ -43,28 +43,22 @@ class AdminController extends Controller
     public function addManager(Request $request)
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            "email" => "required|exists:users,email",
         ]);
 
-        $user = User::findOrFail($validated['user_id']);
+        $user = User::where("email", $validated["email"])->firstOrFail();
 
         // Remove existing roles and assign manager role
-        $user->syncRoles(['support-manager']);
+        $user->syncRoles(["support-manager"]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'User promoted to manager successfully.',
-            'data' => [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'new_role' => 'support-manager',
-            ],
-        ]);
+        return redirect()
+            ->route("agent-list")
+            ->with("success", "Successfully promoted the user to agent.");
     }
 
     /**
@@ -73,26 +67,26 @@ class AdminController extends Controller
     public function revokeManager(Request $request)
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            "email" => "required|exists:users,email",
         ]);
 
-        $user = User::findOrFail($validated['user_id']);
+        $user = User::where("email", $validated["email"])->firstOrFail();
 
         // Demote to regular user
-        $user->syncRoles(['user']);
+        $user->syncRoles(["user"]);
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Manager role revoked successfully.',
-            'data' => [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'new_role' => 'user',
+            "status" => 200,
+            "message" => "Manager role revoked successfully.",
+            "data" => [
+                "user_id" => $user->id,
+                "user_name" => $user->name,
+                "new_role" => "user",
             ],
         ]);
     }
@@ -103,27 +97,27 @@ class AdminController extends Controller
     public function listAgents()
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
-        $agents = User::role('agent')
-            ->withCount('ticketAssignments')
+        $agents = User::role("agent")
+            ->withCount("ticketAssignments")
             ->get()
             ->map(function ($agent) {
                 return [
-                    'id' => (string)$agent->id,
-                    'name' => $agent->name,
-                    'email' => $agent->email,
-                    'title' => 'Support Agent',
-                    'img_link' => '/img/emu.jpg',
-                    'assigned_tickets' => $agent->ticket_assignments_count ?? 0,
+                    "id" => (string) $agent->id,
+                    "name" => $agent->name,
+                    "email" => $agent->email,
+                    "title" => "Support Agent",
+                    "img_link" => "/img/emu.jpg",
+                    "assigned_tickets" => $agent->ticket_assignments_count ?? 0,
                 ];
             })
             ->toArray();
 
-        return view('routes.admin-agent-list', [
-            'agents' => $agents,
+        return view("routes.admin-agent-list", [
+            "agents" => $agents,
         ]);
     }
 
@@ -133,28 +127,22 @@ class AdminController extends Controller
     public function addAgent(Request $request)
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            "email" => "required|exists:users,email",
         ]);
 
-        $user = User::findOrFail($validated['user_id']);
+        $user = User::where("email", $validated["email"])->firstOrFail();
 
         // Remove existing roles and assign agent role
-        $user->syncRoles(['agent']);
+        $user->syncRoles(["agent"]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'User promoted to agent successfully.',
-            'data' => [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'new_role' => 'agent',
-            ],
-        ]);
+        return redirect()
+            ->route("agent-list")
+            ->with("success", "Successfully promoted the user to agent.");
     }
 
     /**
@@ -163,40 +151,44 @@ class AdminController extends Controller
     public function revokeAgent(Request $request)
     {
         // Only admins can access
-        if (!Auth::user() || !Auth::user()->hasRole('admin')) {
+        if (!Auth::user() || !Auth::user()->hasRole("admin")) {
             abort(403);
         }
 
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            "email" => "required|exists:users,email",
         ]);
 
-        $user = User::findOrFail($validated['user_id']);
+        $user = User::where("email", $validated["email"])->firstOrFail();
 
         // Check if agent has active ticket assignments
         $activeAssignments = $user->ticketAssignments()->count();
-        
+
         if ($activeAssignments > 0) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Cannot revoke agent role. Agent has active ticket assignments.',
-                'data' => [
-                    'user_id' => $user->id,
-                    'active_assignments' => $activeAssignments,
+            return response()->json(
+                [
+                    "status" => 400,
+                    "message" =>
+                        "Cannot revoke agent role. Agent has active ticket assignments.",
+                    "data" => [
+                        "user_id" => $user->id,
+                        "active_assignments" => $activeAssignments,
+                    ],
                 ],
-            ], 400);
+                400,
+            );
         }
 
         // Demote to regular user
-        $user->syncRoles(['user']);
+        $user->syncRoles(["user"]);
 
         return response()->json([
-            'status' => 200,
-            'message' => 'Agent role revoked successfully.',
-            'data' => [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'new_role' => 'user',
+            "status" => 200,
+            "message" => "Agent role revoked successfully.",
+            "data" => [
+                "user_id" => $user->id,
+                "user_name" => $user->name,
+                "new_role" => "user",
             ],
         ]);
     }
