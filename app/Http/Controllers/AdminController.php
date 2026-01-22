@@ -12,7 +12,7 @@ class AdminController extends Controller
     /**
      * List all managers
      */
-    public function listManagers()
+    public function listManagers(Request $request)
     {
         // Only admins can access
         if (!Auth::user() || !Auth::user()->hasRole("admin")) {
@@ -20,6 +20,7 @@ class AdminController extends Controller
         }
 
         $managers = User::role("support-manager")
+            ->search($request->search)
             ->get()
             ->map(function ($manager) {
                 return [
@@ -94,7 +95,7 @@ class AdminController extends Controller
     /**
      * List all agents
      */
-    public function listAgents()
+    public function listAgents(Request $request)
     {
         // Only admins can access
         if (!Auth::user() || !Auth::user()->hasRole("admin")) {
@@ -103,6 +104,7 @@ class AdminController extends Controller
 
         $agents = User::role("agent")
             ->withCount("ticketAssignments")
+            ->search($request->search)
             ->get()
             ->map(function ($agent) {
                 return [

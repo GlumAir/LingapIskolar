@@ -97,4 +97,17 @@ class User extends Authenticatable
     {
         return $this->hasRole("user");
     }
+
+    public function scopeSearch($query, $search)
+    {
+        if (! empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+    }
+
+
+
 }
