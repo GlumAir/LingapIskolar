@@ -26,7 +26,10 @@
                         My Tickets
                     </h1>
                     <p class="text-lg text-zinc-500">
-                        Track and manage your support requests
+                        Track and manage support requests of 
+                        <span class="font-semibold text-red-800">
+                            {{ auth()->user()->name }}
+                        </span>
                     </p>
                 </div>
             </x-slot>

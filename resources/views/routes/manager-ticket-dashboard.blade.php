@@ -26,6 +26,11 @@
                         Manager Dashboard
                     </h1>
                     <p class="text-lg text-zinc-500">
+                        Welcome, 
+                        <span class="font-semibold text-red-800">
+                            {{ auth()->user()->name }}
+                        </span>
+                        <br>
                         Assign tickets to agents and manage their tickets
                     </p>
                 </div>
